@@ -2,6 +2,7 @@ FROM alpine:latest
 MAINTAINER Trevor Ferre <trevor@alloylab.com>
 
 # install qt build packages #
+RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --update \
 	git patch gtk+ openssl glib fonts-base fonts-extra \
 	make g++ glib-dev gtk+-dev mesa-dev
