@@ -1,39 +1,77 @@
 FROM alpine:latest
 MAINTAINER Trevor Ferre <trevor@alloylab.com>
 
-# set lang so wkhtmltopdf help is in correct lang #
-ENV LANG en_US.UTF-8
-
-# install git & patch packages #
-RUN apk add --update \
-	git patch
-
 # install qt build packages #
 RUN apk add --update \
-	make g++ mesa-dev libice-dev libsm-dev libx11-dev libxext-dev libxrender-dev alsa-lib-dev openssl-dev fontconfig-dev freetype-dev \
-	glib-dev libpng-dev zlib-dev sqlite-dev dbus-dev postgresql-dev mariadb-dev unixodbc-dev cups-dev gtk+-dev tiff-dev libmng-dev \
-	libxrandr-dev libxv-dev libxi-dev perl gawk paxmark rsync freetds-dev hicolor-icon-theme mesa-gl
+	git patch gtk+ openssl glib fonts-base fonts-extra \
+	make g++ glib-dev gtk+-dev mesa-dev
+RUN rm -rf /var/cache/apk/*
 	
 # wkhtmltopdf #
 RUN git clone --recursive https://github.com/wkhtmltopdf/wkhtmltopdf.git /tmp/wkhtmltopdf
 
 COPY conf/qt-musl.patch /tmp/wkhtmltopdf/qt/qt-musl.patch
-COPY conf/qsettings-recursive-global-mutex.patch /tmp/wkhtmltopdf/qt/qsettings-recursive-global-mutex.patch
+COPY conf/qt-musl-iconv-no-bom.patch /tmp/wkhtmltopdf/qt/qt-musl-iconv-no-bom.patch
+COPY conf/qt-recursive-global-mutex.patch /tmp/wkhtmltopdf/qt/qt-recursive-global-mutex.patch
+COPY conf/qt-font-pixel-size.patch /tmp/wkhtmltopdf/qt/qt-font-pixel-size.patch
 
 RUN	cd /tmp/wkhtmltopdf/qt && \
 	patch -p1 -i qt-musl.patch && \
-	patch -p1 -i qsettings-recursive-global-mutex.patch && \
+	patch -p1 -i qt-musl-iconv-no-bom.patch && \
+	patch -p1 -i qt-recursive-global-mutex.patch && \
+	patch -p1 -i qt-font-pixel-size.patch && \
+	sed -i "s|-O2|$CXXFLAGS|" mkspecs/common/g++.conf && \
+	sed -i "/^QMAKE_RPATH/s| -Wl,-rpath,||g" mkspecs/common/g++.conf && \
+	sed -i "/^QMAKE_LFLAGS\s/s|+=|+= $LDFLAGS|g" mkspecs/common/g++.conf && \
 	./configure -confirm-license -opensource \
-		-nomake tools,examples,demos,docs,translations \
 		-prefix /usr \
+		-datadir /usr/share/qt \
+		-sysconfdir /etc \
 		-plugindir /usr/lib/qt/plugins \
 		-importdir /usr/lib/qt/imports \
-		-datadir /usr/share/qt \
-		-sysconfdir /etc && \
+		-fast \
+		-release \
+		-static \
+		-largefile \
+		-glib \
+		-graphicssystem raster \
+		-qt-zlib \
+		-qt-libpng \
+		-qt-libmng \
+		-qt-libtiff \
+		-qt-libjpeg \
+		-svg \
+		-webkit \
+		-gtkstyle \
+		-xmlpatterns \
+		-script \
+		-scripttools \
+		-openssl-linked \
+		-nomake demos \
+		-nomake docs \
+		-nomake examples \
+		-nomake tools \
+		-nomake tests \
+		-nomake translations \
+		-no-qt3support \
+		-no-pch \
+		-no-icu \
+		-no-phonon \
+		-no-phonon-backend \
+		-no-rpath \
+		-no-separate-debug-info \
+		-no-dbus \
+		-no-opengl \
+		-no-openvg && \
 	make && \
 	make install && \
 	cd /tmp/wkhtmltopdf && \
 	qmake && \
 	make && \
 	make install && \
-	cd / && rm -rf /tmp/*
+	rm -rf /tmp/*
+
+# remove qt build packages #
+RUN apk del --update \
+	make g++ glib-dev gtk+-dev mesa-dev
+RUN rm -rf /var/cache/apk/*
