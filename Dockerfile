@@ -5,7 +5,7 @@ MAINTAINER Trevor Ferre <trevor@alloylab.com>
 RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories
 RUN apk add --update \
 	git patch gtk+ openssl glib fonts-base fonts-extra \
-	make g++ glib-dev gtk+-dev mesa-dev
+	make g++ glib-dev gtk+-dev mesa-dev openssl-dev
 RUN rm -rf /var/cache/apk/*
 	
 # wkhtmltopdf #
@@ -74,5 +74,5 @@ RUN	cd /tmp/wkhtmltopdf/qt && \
 
 # remove qt build packages #
 RUN apk del --update \
-	make g++ glib-dev gtk+-dev mesa-dev
+	make g++ glib-dev gtk+-dev mesa-dev openssl-dev
 RUN rm -rf /var/cache/apk/*
