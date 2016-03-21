@@ -64,11 +64,11 @@ RUN	cd /tmp/wkhtmltopdf/qt && \
 		-no-dbus \
 		-no-opengl \
 		-no-openvg && \
-	make && \
+	make --silent && \
 	make install && \
 	cd /tmp/wkhtmltopdf && \
 	qmake && \
-	make && \
+	make --silent && \
 	make install && \
 	rm -rf /tmp/*
 
