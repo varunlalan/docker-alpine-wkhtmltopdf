@@ -1,4 +1,4 @@
-FROM alpine:latest
+FROM alpine:edge
 MAINTAINER Trevor Ferre <trevor@alloylab.com>
 
 # install qt build packages #
