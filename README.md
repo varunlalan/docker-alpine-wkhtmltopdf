@@ -1,9 +1,6 @@
-# Varnish Docker Container
+# Alpine Wkhtmltopdf Docker Container
 
-[![](https://badge.imagelayers.io/alloylab/wkhtmltopdf:latest.svg)](https://imagelayers.io/?images=alloylab/wkhtmltopdf:latest)
-
-> Alpine Lastest  
-> wkhtmltopdf
+[![](https://travis-ci.org/madnight/docker-alpine-wkhtmltopdf.svg)](https://travis-ci.org/madnight/docker-alpine-wkhtmltopdf)
 
 ## Usage
 
