@@ -24,7 +24,7 @@ RUN	cd /tmp/wkhtmltopdf/qt && \
 	sed -i "s|-O2|$CXXFLAGS|" mkspecs/common/g++.conf && \
 	sed -i "/^QMAKE_RPATH/s| -Wl,-rpath,||g" mkspecs/common/g++.conf && \
 	sed -i "/^QMAKE_LFLAGS\s/s|+=|+= $LDFLAGS|g" mkspecs/common/g++.conf && \
-	./configure -confirm-license -opensource \
+	CFLAGS=-w CPPFLAGS=-w CXXFLAGS=-w LDFLAGS=-w ./configure -confirm-license -opensource \
 		-prefix /usr \
 		-datadir /usr/share/qt \
 		-sysconfdir /etc \
