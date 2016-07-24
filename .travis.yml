@@ -1,14 +1,13 @@
 sudo: required
 
-language: bash
-
 services:
   - docker
 
 before_install:
   - docker build -t test-service .
-  - docker run -d --name test-service test-service
-  - pip install requests
+  - sudo apt-get -qq update
+  - sudo apt-get install -y poppler-utils
 
 script:
-  - docker ps | grep -q test-service
+  - docker run -P test-service -q google.com - - > test.pdf 
+  - pdftotext -layout test.pdf - | grep -q Google
