@@ -1,14 +1,12 @@
-FROM alpine:latest
+FROM alpine
 MAINTAINER Fabian Beuke <mail@beuke.org>
 
-# testing repositories contain fonts
-RUN echo "http://dl-4.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories && \
-    apk add --update --no-cache \
-    libgcc libstdc++ libx11 glib libxrender libxext libintl fonts-base && \
-    rm -rf /var/cache/apk/*
-	
+RUN apk add --update --no-cache \
+    libgcc libstdc++ libx11 glib libxrender libxext libintl \
+    ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family
+
 # on alpine static compiled patched qt headless wkhtmltopdf (47.2 MB)
-ADD wkhtmltopdf /
+# compilation takes 4 hours on EC2 m1.large in 2016 thats why binary
+COPY wkhtmltopdf /bin
 
-ENTRYPOINT ["./wkhtmltopdf"]
-
+ENTRYPOINT ["wkhtmltopdf"]
