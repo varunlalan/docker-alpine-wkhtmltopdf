@@ -3,6 +3,7 @@ MAINTAINER Fabian Beuke <mail@beuke.org>
 
 RUN apk add --update --no-cache \
     libgcc libstdc++ libx11 glib libxrender libxext libintl \
+    libcrypto1.0 libssl1.0 \
     ttf-dejavu ttf-droid ttf-freefont ttf-liberation ttf-ubuntu-font-family
 
 # on alpine static compiled patched qt headless wkhtmltopdf (47.2 MB)
