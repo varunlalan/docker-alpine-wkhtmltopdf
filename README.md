@@ -18,6 +18,9 @@ docker run alpine-wkhtmltopdf google.com - > test.pdf
 
 # i'm lazy
 docker run madnight/docker-alpine-wkhtmltopdf google.com - > test.pdf
+
+# or mount a local file (e.g. test.html)
+docker run --rm -v $(pwd):/data madnight/docker-alpine-wkhtmltopdf /data/test.html - > test.pdf
 ```
 
 ## Q&A
