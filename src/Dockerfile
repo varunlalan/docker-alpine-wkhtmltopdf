@@ -145,17 +145,19 @@ RUN ./configure -confirm-license -opensource \
   -fontconfig                                \
   -D ENABLE_VIDEO=0
 
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
+RUN timeout 600 make -s --jobs 2 2> /dev/null || true
 
 RUN make install              \
                               \

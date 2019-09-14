@@ -3,12 +3,23 @@ sudo: required
 services:
   - docker
 
-before_install:
-  - docker build -f src/Dockerfile . -t test
-  - docker build -t test-service .
-  - sudo apt-get -qq update
-  - sudo apt-get install -y poppler-utils
+dist: trusty
 
-script:
-  - docker run -P test-service -q google.com - - > test.pdf
-  - pdftotext -layout test.pdf - | grep -q Google
+jobs:
+  include:
+    - stage: build docker image
+      script:
+      - docker build -f src/Dockerfile . -t test
+      - docker build -t test-service .
+      - sudo apt-get -qq update
+      - sudo apt-get install -y poppler-utils
+      # - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+      # - docker build -t travis-ci-build-stages-demo .
+      # - docker images
+      # - docker tag travis-ci-build-stages-demo $DOCKER_USERNAME/travis-ci-build-stages-demo
+      # - docker push $DOCKER_USERNAME/travis-ci-build-stages-demo
+    - stage: test
+      script:
+        - docker run -P test-service -q google.com - - > test.pdf
+        - pdftotext -layout test.pdf - | grep -q Google
+
