@@ -4,7 +4,12 @@ services:
   - docker
 
 before_install:
-  - docker build -f src/Dockerfile . -t madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build
+    --cache-from madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10
+    -f src/Dockerfile .
+    -t madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10
+  - docker push madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10
   - docker build -t madnight/alpine-wkhtmltopdf .
   - sudo apt-get -qq update
   - sudo apt-get install -y poppler-utils
