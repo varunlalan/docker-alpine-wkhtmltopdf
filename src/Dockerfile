@@ -1,4 +1,4 @@
-FROM alpine:3.10 as builder
+FROM alpine:3.10
 
 ENV WKHTMLTOX_VERSION=0.12.5
 ENV REPO=https://github.com/wkhtmltopdf/wkhtmltopdf.git
@@ -145,18 +145,7 @@ RUN ./configure -confirm-license -opensource \
   -fontconfig                                \
   -D ENABLE_VIDEO=0
 
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-RUN timeout 600 make --jobs 2 --silent || true
-
+RUN make -s --jobs 2 2> /dev/null
 RUN make install              \
                               \
 # Install wkhtmltopdf
@@ -177,34 +166,4 @@ RUN make install              \
     && rm -rf /tmp/*          \
     && apk del .build-deps
 
-# Image
-FROM alpine:3.10
-
-RUN apk add --no-cache                          \
-    libstdc++                                   \
-    libx11                                      \
-    libxrender                                  \
-    libxext                                     \
-    libssl1.1                                   \
-    ca-certificates                             \
-    fontconfig                                  \
-    freetype                                    \
-    ttf-dejavu                                  \
-    ttf-droid                                   \
-    ttf-freefont                                \
-    ttf-liberation                              \
-    ttf-ubuntu-font-family                      \
-    && apk add --no-cache --virtual .build-deps \
-    msttcorefonts-installer                     \
-                                                \
-    # Install microsoft fonts
-    && update-ms-fonts                          \
-    && fc-cache -f                              \
-                                                \
-    # Clean up when done
-    && rm -rf /tmp/*                            \
-    && apk del .build-deps
-
-COPY --from=builder /bin/wkhtmltopdf /bin/wkhtmltopdf
-
-ENTRYPOINT ["wkhtmltopdf"]
+RUN sha256sum /bin/wkhtmltopdf
