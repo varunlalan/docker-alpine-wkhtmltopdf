@@ -5,6 +5,7 @@ services:
 
 before_install:
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker pull madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10 || true
   - docker build
     --cache-from madnight/alpine-wkhtmltopdf-builder:0.12.5-alpine3.10
     -f src/Dockerfile .
