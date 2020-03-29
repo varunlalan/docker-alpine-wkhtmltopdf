@@ -1,4 +1,4 @@
-FROM alpine:3.10
+FROM alpine:3.11
 
 ENV WKHTMLTOX_VERSION=0.12.5
 ENV REPO=https://github.com/wkhtmltopdf/wkhtmltopdf.git
