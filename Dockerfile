@@ -1,4 +1,4 @@
-FROM alpine:3.11
+FROM alpine:3.13
 MAINTAINER Fabian Beuke <mail@beuke.org>
 
 RUN apk add --update --no-cache \
