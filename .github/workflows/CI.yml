@@ -19,12 +19,4 @@ jobs:
         DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
         DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
       run: |
-           echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
-           docker pull varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14 || true
-           docker build \
-           --cache-from varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14 \
-           -t varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14 \
-           -t varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14-"$GITHUB_RUN_ID"
-           docker push varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14
-           docker push varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14-"$GITHUB_RUN_ID"
-           docker build -t varunlalan/alpine-wkhtmltopdf .
+           docker build -t varunlalan/alpine-wkhtmltopdf-builder:0.12.6-alpine3.14-"$GITHUB_RUN_ID" .
