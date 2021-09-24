@@ -21,7 +21,7 @@ RUN apk add --no-cache                          \
     ttf-droid                                   \
     ttf-freefont                                \
     ttf-liberation                              \
-    ttf-ubuntu-font-family                      \
+    ttf-freefont                      \
     && apk add --no-cache --virtual .build-deps \
     g++                                         \
     git                                         \
